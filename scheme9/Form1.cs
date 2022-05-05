@@ -1,9 +1,11 @@
 ﻿
+using System.Drawing;
 using System.Media;
 using System.Threading;
 using System.Threading.Tasks;
 using SharpGL;
 using System.Windows.Forms;
+using SharpGL.SceneGraph.Assets;
 using SharpGL.SceneGraph.Cameras;
 
 namespace scheme9
@@ -13,12 +15,15 @@ namespace scheme9
 
         Drawer Create;
         OpenGL openGL;
-        
+        private string fileDirectory;
+        private OpenFileDialog openFileDialog1;
+
         public Form1()
         {
             InitializeComponent();
             openGL = new OpenGL();
-            Create = new Drawer(openGL);
+            Create = new Drawer(openGL,fileDirectory);
+            openFileDialog1 = new OpenFileDialog();
             
         }
         
@@ -88,10 +93,11 @@ namespace scheme9
             openGL.Rotate(Camera2, 0.0f, 1.0f, 0.0f);
 
             openGL.Color(1.0f, 1.0f, 1.0f);
+            Create.Parallelepiped(0.0f, -7.0f, 0.0f, 20.0f, 0.0f, 20.0f);
             //stolb
             openGL.PushMatrix();
            
-            Create.Polygon(0.0f, 0.0f, 0.0f, 2.5f, 2.5f, 1.0f, 1.0f, 8.0f);
+            Create.Polygon(0.0f, -3.0f, 0.0f, 2.5f, 2.5f, 1.0f, 1.0f, 11.0f);
             openGL.PopMatrix();
             openGL.Color(0.0, 0.0f, 0.0f);
             openGL.PushMatrix();
@@ -337,6 +343,21 @@ namespace scheme9
             }
         }
 
+        private void button1_Click(object sender, System.EventArgs e)
+        {
+            OpenFileDialog myFile = new OpenFileDialog();
+            myFile.Filter = "picture files (*.jpg)|*.jpg|All files (*.*)|*.*";
+            if (myFile.ShowDialog() == DialogResult.OK)
+            {
+                fileDirectory = myFile.FileName;
+
+            }
+            Drawer.fileDirectory = fileDirectory;
+            Drawer.Texture();
+        }
+
         
+
+       
     }
 }

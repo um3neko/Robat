@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using SharpGL;
 using SharpGL.SceneGraph.Assets;
 
@@ -13,21 +15,27 @@ namespace scheme9
     internal class Drawer
     {
 
-         Bitmap textureImage;
-         Texture texture = new Texture();
-         
+        static Bitmap textureImage; 
+        static Texture texture = new Texture();
+        public static string fileDirectory;
 
-        private OpenGL Gl;
-        public Drawer(OpenGL gl)
+
+        static  OpenGL Gl;
+
+        public Drawer(OpenGL gl, string _fileDirectory)
         {
             Gl = gl;
             Gl.Enable(OpenGL.GL_TEXTURE_2D);
-            textureImage = new Bitmap(@"D:\6.jpg");
-            
+            fileDirectory = _fileDirectory;
+        }
+
+        public static void Texture()
+        {
+            textureImage = new Bitmap(fileDirectory.ToString());
+
             texture.Create(Gl, textureImage);
-            
+
             texture.Bind(Gl);
-            
         }
 
         public void Circle(double r, double x = 0, double y = 0, double z = 0)
